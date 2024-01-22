@@ -1,44 +1,40 @@
 package org.karmelcafe.photoclone.service;
 import org.karmelcafe.photoclone.model.Photo;
+import org.karmelcafe.photoclone.repository.PhotoRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 // @Component
 @Service
 public class PhotoService {
 
-    // Create the database
-    private final Map<String, Photo> db = new HashMap<>() {{
-        put("1", new Photo("1", "hello.jpg"));
-    }};
+    private final PhotoRepository photoRepository;
+
+    public PhotoService(PhotoRepository photoRepository) {
+        this.photoRepository = photoRepository;
+    }
 
     // Get all the photos
-    public Collection<Photo> get() {
-        return db.values();
+    public Iterable<Photo> get() {
+        return photoRepository.findAll();
     }
 
     // Fetch a single photo with the id
-    public Photo get(String id) {
-        return db.get(id);
+    public Photo get(Integer id) {
+        return photoRepository.findById(id).orElse(null);
     }
 
     // Delete a single photo with the id
-    public Photo remove(String id) {
-        return db.remove(id);
+    public void remove(Integer id) {
+        photoRepository.deleteById(id);
     }
 
     // Create a single photo with the id
     public Photo save(String fileName, String contentType, byte[] data) {
         Photo photo = new Photo();
         photo.setContentType(contentType);
-        photo.setId(UUID.randomUUID().toString());
         photo.setFileName(fileName);
         photo.setData(data);
-        db.put(photo.getId(), photo);
+        photoRepository.save(photo);
         return photo;
     }
 }

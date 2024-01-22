@@ -2,11 +2,16 @@ package org.karmelcafe.photoclone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
+// Map the java class to the database table
+@Table("PHOTO")
 public class Photo {
 
     // Photo's id
-    private String id;
+    @Id
+    private Integer id;
 
     // Photo's name
     @NotEmpty
@@ -22,12 +27,6 @@ public class Photo {
     public Photo() {
     }
 
-    // Photo Constructor id and fileName
-    public Photo(String id, String fileName) {
-        this.id = id;
-        this.fileName = fileName;
-    }
-
     // Raw data
 
 
@@ -38,14 +37,6 @@ public class Photo {
 
     public void setData(byte[] data) {
         this.data = data;
-    }
-
-    // Getter & Setter for id
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
     }
 
     // Getter & Setter for contentType
